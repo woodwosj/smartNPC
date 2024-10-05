@@ -1,0 +1,11 @@
+# requirements.txt file
+
+# Note: To successfully build chromadb, you need Microsoft Visual C++ Build Tools.
+# Download it from: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+
+fastapi
+uvicorn
+chromadb
+openai
+pydantic
+requests
