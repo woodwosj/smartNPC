@@ -4,11 +4,14 @@ from typing import List, Optional
 import chromadb
 from chromadb.utils import embedding_function
 import uuid
+import os
 import openai
+
+#Extract OpenAI API key from local system environmental variable.
+os.getenv('OPENAI_API_KEY')
 
 # Initialize FastAPI app
 app = FastAPI()
-
 # Initialize Chroma vector database
 client = chromadb.Client()
 db = client.get_or_create_collection(name="npc_memory")
@@ -86,7 +89,7 @@ def generate_dialogue(npc: NPC, context: Optional[str], memory_context: str) -> 
     character_card = f"Character Card:\nName: {npc.name}\nSpecies: {npc.species}\nAge: {npc.age}\nGender: {npc.gender}\nSkills: {', '.join(npc.skills)}\nBackground: {npc.background}\nAbilities: {', '.join(npc.abilities)}\n"
     combined_context = f"Memories:\n{memory_context}\n\nContext: {context}\n" if context else f"Memories:\n{memory_context}\n"
     available_tokens = max_input_tokens - len(character_card.split()) - len(combined_context.split())
-    prompt = f"{character_card}{combined_context[:available_tokens]}{npc.name} says:\nPlease respond with structured output in the following format:\n{{"dialogue": "<response>"}}"
+    prompt = f"""{character_card}{combined_context[:available_tokens]}{npc.name} says:\nPlease respond with structured output in the following format:\n{{"dialogue": "<response>"}}"""
 
     response = openai.Completion.create(
         model="gpt-4o-mini",
@@ -102,7 +105,7 @@ def generate_emotion(npc: NPC, context: Optional[str], memory_context: str) -> d
     character_card = f"Character Card:\nName: {npc.name}\nSpecies: {npc.species}\nAge: {npc.age}\nGender: {npc.gender}\nSkills: {', '.join(npc.skills)}\nBackground: {npc.background}\nAbilities: {', '.join(npc.abilities)}\n"
     combined_context = f"Memories:\n{memory_context}\n\nContext: {context}\n" if context else f"Memories:\n{memory_context}\n"
     available_tokens = max_input_tokens - len(character_card.split()) - len(combined_context.split())
-    prompt = f"{character_card}{combined_context[:available_tokens]}{npc.name} emotes:\nPlease respond with structured output in the following format:\n{{"emote": "<response>"}}"
+    prompt = f"""{character_card}{combined_context[:available_tokens]}{npc.name} emotes:\nPlease respond with structured output in the following format:\n{{"emote": "<response>"}}"""
 
     response = openai.Completion.create(
         model="gpt-4o-mini",

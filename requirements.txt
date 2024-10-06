@@ -3,6 +3,8 @@
 # Note: To successfully build chromadb, you need Microsoft Visual C++ Build Tools.
 # Download it from: https://visualstudio.microsoft.com/visual-cpp-build-tools/
 
+#You will need to set OPENAI_API_KEY to a local system environmental variable.
+
 fastapi
 uvicorn
 chromadb
